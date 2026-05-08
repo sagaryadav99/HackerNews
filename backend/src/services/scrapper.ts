@@ -1,29 +1,28 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { StoryType } from "../types/storytype";
+import { Story } from "../models/storymodel";
 export async function scrapeStories() {
-  const arr: StoryType[] = [];
   const result = await axios.get("https://news.ycombinator.com");
   const $ = cheerio.load(result.data);
-  $(".athing.submission").each((i, el) => {
+  const rows = $(".athing.submission").toArray();
+
+  for (const el of rows) {
     const id = $(el).attr("id");
     if (!id) {
-      return;
+      continue;
     }
     const title = $(el).find(".titleline").text();
     const url = $(el).find(".titleline").find("a").attr("href");
     const nextRow = $(el).next();
-    const score = $(nextRow).find(".score").text();
+    let scoreText = $(nextRow).find(".score").text();
+    const score = parseInt(scoreText) || 0;
     const hnuser = $(nextRow).find(".hnuser").text();
-    const age = $(nextRow).find(".age").attr("title");
-    arr.push({
+    const ageText = $(nextRow).find(".age").attr("title");
+    const age = ageText?.split(" ")[0];
+    await Story.findByIdAndUpdate(
       id,
-      title,
-      url: url ?? "no link",
-      score,
-      hnuser,
-      age: new Date(age?.split(" ")[0] ?? new Date()),
-    });
-  });
-  return arr;
+      { title, url, score, hnuser, age },
+      { upsert: true },
+    );
+  }
 }
