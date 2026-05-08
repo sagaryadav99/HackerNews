@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function Register() {
@@ -18,7 +18,8 @@ export function Register() {
   const name = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
+  const [invalid, setInvalid] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
   async function onclickhandler() {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     try {
@@ -29,7 +30,12 @@ export function Register() {
       });
       navigate("/login");
     } catch (e) {
-      console.log(e);
+      setInvalid(true);
+      if (axios.isAxiosError(e)) {
+        setMessage(e.response?.data.message ?? "user not created");
+      } else {
+        setMessage("something went wrong");
+      }
     }
   }
 
@@ -102,6 +108,7 @@ export function Register() {
               Login
             </span>
           </p>
+          {invalid ? <p className="text-red-500">{message}</p> : null}
         </CardFooter>
       </Card>
     </div>

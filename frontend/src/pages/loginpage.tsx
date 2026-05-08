@@ -12,13 +12,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AuthContext } from "@/context/authContext";
 import axios from "axios";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export function Login() {
   const username = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
+  const [invalid, setInvalid] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
@@ -41,8 +43,13 @@ export function Login() {
       localStorage.setItem("token", result.data.token);
       auth?.setLoggedIn(true);
       navigate("/");
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      setInvalid(true);
+      if (axios.isAxiosError(e)) {
+        setMessage(e.response?.data.message ?? "login failed");
+      } else {
+        setMessage("something went wrong");
+      }
     }
   }
 
@@ -105,6 +112,7 @@ export function Login() {
           >
             Login
           </Button>
+          {invalid ? <p className="text-red-500">{message}</p> : null}
         </CardFooter>
       </Card>
     </div>

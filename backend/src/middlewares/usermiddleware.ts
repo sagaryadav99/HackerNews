@@ -12,12 +12,12 @@ export async function usermiddleware(
       throw new Error("no jwt secret provided");
     }
     if (!token) {
-      res.json({ message: "please signin first" });
+      res.status(401).json({ message: "please signin first" });
       return;
     }
     const decoded = jwt.verify(token, secret);
     if (!decoded) {
-      res.json({ message: "please signin again" });
+      res.status(401).json({ message: "please signin first" });
       return;
     }
     if (typeof decoded === "string") {

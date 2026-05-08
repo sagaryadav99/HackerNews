@@ -8,7 +8,7 @@ export async function userRegister(req: Request, res: Response) {
   try {
     const result = await User.findOne({ username });
     if (result) {
-      res.json({ message: "user already exist,please login" });
+      res.status(401).json({ message: "user already exists,please login" });
       return;
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -26,7 +26,7 @@ export async function userLogin(req: Request, res: Response) {
       res.status(404).json({ message: "user doesn't exist, please register " });
       return;
     }
-    const passwordMatch = bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       res.status(401).json({ message: "invalid credentials" });
       return;
@@ -35,7 +35,7 @@ export async function userLogin(req: Request, res: Response) {
       throw new Error("no jwt secret provided");
     }
     const token = jwt.sign({ id: user._id }, secret);
-    res.status(200).json({ token: token });
+    res.status(200).json({ message: "logged in", token: token });
   } catch (e) {
     console.log(e);
   }
