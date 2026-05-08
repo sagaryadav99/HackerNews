@@ -32,8 +32,9 @@ export function Login() {
   }, []);
 
   async function onclickhandler() {
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     try {
-      const result = await axios.post("http://localhost:3000/api/auth/login", {
+      const result = await axios.post(`${BACKEND_URL}/api/auth/login`, {
         username: username.current?.value,
         password: password.current?.value,
       });

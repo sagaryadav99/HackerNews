@@ -18,16 +18,17 @@ export function BookMarkToggle({ id }: { id: string }) {
   );
 
   async function handlePressedChange(value: boolean) {
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const token = localStorage.getItem("token");
     setBookmarked(value);
     if (!value) {
-      await axios.delete(`http://localhost:3000/api/stories/${id}/bookmark`, {
+      await axios.delete(`${BACKEND_URL}/api/stories/${id}/bookmark`, {
         headers: { authorization: token },
       });
       setBookmarked(false);
     } else {
       await axios.post(
-        `http://localhost:3000/api/stories/${id}/bookmark`,
+        `${BACKEND_URL}/api/stories/${id}/bookmark`,
         {},
         { headers: { authorization: token } },
       );

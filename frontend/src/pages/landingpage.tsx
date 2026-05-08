@@ -7,7 +7,8 @@ export function LandingPage() {
   const [stories, setStories] = useState<StoryType[]>([]);
   useEffect(() => {
     async function loadStories() {
-      const result = await axios.get("http://localhost:3000/api/stories");
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+      const result = await axios.get(`${BACKEND_URL}/api/stories`);
       setStories(result.data.stories);
     }
     loadStories();

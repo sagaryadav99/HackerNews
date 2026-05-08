@@ -1,7 +1,6 @@
 import { Story } from "../models/storymodel";
 import { Request, Response } from "express";
 import { User } from "../models/usermodel";
-import { StoryType } from "../types/storytype";
 export async function getStories(req: Request, res: Response) {
   const storyarr = await Story.find().sort({ points: -1 });
   const twentyfourhourfilter = new Date(Date.now() - 24 * 60 * 60 * 1000);

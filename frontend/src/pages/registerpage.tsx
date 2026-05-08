@@ -20,8 +20,9 @@ export function Register() {
   const navigate = useNavigate();
 
   async function onclickhandler() {
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     try {
-      await axios.post("http://localhost:3000/api/auth/register", {
+      await axios.post(`${BACKEND_URL}/api/auth/register`, {
         username: username.current?.value,
         name: name.current?.value,
         password: password.current?.value,
