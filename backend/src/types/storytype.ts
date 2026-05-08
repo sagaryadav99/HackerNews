@@ -1,8 +1,8 @@
 export type StoryType = {
-  id: string;
+  _id: string;
   title: string;
   url: string;
-  score: number;
-  hnuser: string;
-  age: Date;
+  points: number;
+  author: string;
+  postedAt: Date;
 };

@@ -21,7 +21,7 @@ export async function scrapeStories() {
     const age = ageText?.split(" ")[0];
     await Story.findByIdAndUpdate(
       id,
-      { title, url, score, hnuser, age },
+      { title, url, points: score, author: hnuser, postedAt: age },
       { upsert: true },
     );
   }
