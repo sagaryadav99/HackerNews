@@ -18,6 +18,7 @@ export function Register() {
   const name = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
   async function onclickhandler() {
     try {
       await axios.post("http://localhost:3000/api/auth/register", {
@@ -30,39 +31,76 @@ export function Register() {
       console.log(e);
     }
   }
+
   return (
-    <div className="min-h-screen pt-8 flex items-start justify-center">
-      <Card className="w-full max-w-sm">
+    <div className="min-h-screen bg-gray-950 flex items-start py-8 justify-center px-4">
+      <Card className="w-full max-w-sm border-gray-700 bg-gray-900 text-gray-100">
         <CardHeader>
-          <CardTitle>Create Account</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-gray-100">Create Account</CardTitle>
+          <CardDescription className="text-gray-500">
             Enter your username, name and password below to create your account
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" type="text" required ref={username} />
+                <Label htmlFor="username" className="text-gray-400">
+                  Username
+                </Label>
+                <Input
+                  id="username"
+                  type="text"
+                  required
+                  ref={username}
+                  className="border-gray-700 bg-gray-950 text-gray-100 placeholder:text-gray-600 focus-visible:ring-blue-500/50"
+                />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" type="text" required ref={name} />
+                <Label htmlFor="name" className="text-gray-400">
+                  Name
+                </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  required
+                  ref={name}
+                  className="border-gray-700 bg-gray-950 text-gray-100 placeholder:text-gray-600 focus-visible:ring-blue-500/50"
+                />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <Input id="password" type="password" ref={password} required />
+                <Label htmlFor="password" className="text-gray-400">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  ref={password}
+                  className="border-gray-700 bg-gray-950 text-gray-100 placeholder:text-gray-600 focus-visible:ring-blue-500/50"
+                />
               </div>
             </div>
           </form>
         </CardContent>
+
         <CardFooter className="flex-col gap-2">
-          <Button className="w-full" onClick={onclickhandler}>
+          <Button
+            className="w-full border border-blue-500/50 bg-blue-500/15 text-blue-500 hover:bg-blue-500/25 hover:text-blue-400"
+            onClick={onclickhandler}
+          >
             Create Account
           </Button>
+          <p className="text-[13px] text-gray-500">
+            Already have an account?{" "}
+            <span
+              className="cursor-pointer text-blue-500 hover:text-blue-400"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </span>
+          </p>
         </CardFooter>
       </Card>
     </div>
