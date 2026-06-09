@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 
 export function LandingPage() {
   const [stories, setStories] = useState<StoryType[]>([]);
+
   useEffect(() => {
     async function loadStories() {
-      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-      const result = await axios.get(`${BACKEND_URL}/api/stories`);
-      setStories(result.data.stories);
+      try {
+        const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+        const result = await axios.get(`${BACKEND_URL}/api/stories`);
+        setStories(result.data.stories);
+      } catch (e) {
+        console.log(e);
+      }
     }
     loadStories();
   }, []);
